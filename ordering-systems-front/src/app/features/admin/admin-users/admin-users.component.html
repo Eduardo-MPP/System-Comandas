@@ -1,0 +1,125 @@
+<div class="admin-users">
+  <div class="header">
+    <div>
+      <h1 class="title">Gestor de Usuarios</h1>
+      <p class="subtitle">Administra los empleados del restaurante</p>
+    </div>
+    <button class="btn-primary" (click)="openCreateModal()">
+      + Nuevo Usuario
+    </button>
+  </div>
+
+  <div class="table-container" *ngIf="!loading">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Nombre</th>
+          <th>Email</th>
+          <th>Rol</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of users">
+          <td>
+            <div class="user-name">{{ user.fullName }}</div>
+          </td>
+          <td>{{ user.email }}</td>
+          <td>
+            <span class="role-badge" [class]="'role-' + user.role.toLowerCase()">
+              {{ getRoleLabel(user.role) }}
+            </span>
+          </td>
+          <td>
+            <span class="badge" [class.active]="user.active" [class.inactive]="!user.active">
+              {{ user.active ? 'Activo' : 'Inactivo' }}
+            </span>
+          </td>
+          <td>
+            <div class="actions">
+              <button class="btn-edit" (click)="openEditModal(user)">Editar</button>
+              <button class="btn-password" (click)="openPasswordModal(user.id)">Contraseña</button>
+              <button class="btn-delete" (click)="deactivateUser(user.id)">Desactivar</button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="loading" *ngIf="loading">
+    <div class="spinner"></div>
+    <p>Cargando usuarios...</p>
+  </div>
+</div>
+
+<!-- Modal Usuario -->
+<div class="modal-overlay" *ngIf="showModal" (click)="closeModal()">
+  <div class="modal" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>{{ editMode ? 'Editar Usuario' : 'Nuevo Usuario' }}</h2>
+      <button class="close-btn" (click)="closeModal()">✕</button>
+    </div>
+
+    <div class="modal-body">
+      <div class="form-group">
+        <label>Nombre Completo</label>
+        <input type="text" [(ngModel)]="currentUser.fullName" placeholder="Nombre del usuario">
+      </div>
+
+      <div class="form-group">
+        <label>Email / Usuario</label>
+        <input type="text" [(ngModel)]="currentUser.email" placeholder="email@ejemplo.com">
+      </div>
+
+      <div class="form-group" *ngIf="!editMode">
+        <label>Contraseña</label>
+        <input type="password" [(ngModel)]="currentUser.password" placeholder="Contraseña inicial">
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Rol</label>
+          <select [(ngModel)]="currentUser.role">
+            <option *ngFor="let role of roles" [value]="role">{{ getRoleLabel(role) }}</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label>
+            <input type="checkbox" [(ngModel)]="currentUser.active">
+            Usuario Activo
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn-secondary" (click)="closeModal()">Cancelar</button>
+      <button class="btn-primary" (click)="saveUser()">{{ editMode ? 'Guardar Cambios' : 'Crear Usuario' }}</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Contraseña -->
+<div class="modal-overlay" *ngIf="showPasswordModal" (click)="closePasswordModal()">
+  <div class="modal modal-small" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>Resetear Contraseña</h2>
+      <button class="close-btn" (click)="closePasswordModal()">✕</button>
+    </div>
+
+    <div class="modal-body">
+      <div class="form-group">
+        <label>Nueva Contraseña</label>
+        <input type="password" [(ngModel)]="newPassword" placeholder="Nueva contraseña">
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn-secondary" (click)="closePasswordModal()">Cancelar</button>
+      <button class="btn-primary" (click)="resetPassword()">Actualizar Contraseña</button>
+    </div>
+  </div>
+</div>

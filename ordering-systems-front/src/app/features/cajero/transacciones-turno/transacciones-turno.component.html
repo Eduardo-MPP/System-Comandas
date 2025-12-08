@@ -1,0 +1,91 @@
+<app-navbar></app-navbar>
+
+<div class="transactions-container">
+    <div class="transactions-header">
+        <button class="btn-back" (click)="goBack()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="19" y1="12" x2="5" y2="12"></line>
+                <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+            Volver
+        </button>
+        <h1>
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect width="20" height="14" x="2" y="5" rx="2"></rect>
+                <line x1="2" y1="10" x2="22" y2="10"></line>
+            </svg>
+            Transacciones del Turno Actual
+        </h1>
+        <p>Detalle de todos los pagos procesados en el turno</p>
+    </div>
+
+    <div class="summary-cards" *ngIf="cashSummary">
+        <div class="summary-card total">
+            <span class="card-label">Total Vendido</span>
+            <span class="card-amount">S/ {{ cashSummary.totalAmount.toFixed(2) }}</span>
+        </div>
+        <div class="summary-card">
+            <span class="card-label">Transacciones</span>
+            <span class="card-amount">{{ cashSummary.totalTransactions }}</span>
+        </div>
+    </div>
+
+    <div class="loading-spinner" *ngIf="isLoading">
+        <div class="spinner"></div>
+        <p>Cargando transacciones...</p>
+    </div>
+
+    <div class="transactions-list" *ngIf="!isLoading && transactions.length > 0">
+        <div class="transaction-card" *ngFor="let transaction of transactions">
+            <div class="transaction-header">
+                <div class="table-info">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 2v20M2 12h20"></path>
+                        <circle cx="12" cy="12" r="9"></circle>
+                    </svg>
+                    <span class="table-number">Mesa {{ transaction.tableNumber }}</span>
+                </div>
+                <div class="transaction-time">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 6 12 12 16 14"></polyline>
+                    </svg>
+                    {{ formatTime(transaction.paidAt) }}
+                </div>
+            </div>
+
+            <div class="transaction-body">
+                <div class="transaction-method" [style.background-color]="getMethodColor(transaction.method)">
+                    <span class="method-icon">{{ getMethodIcon(transaction.method) }}</span>
+                    <span class="method-name">{{ transaction.method }}</span>
+                </div>
+                <div class="transaction-amount">
+                    S/ {{ transaction.amount.toFixed(2) }}
+                </div>
+            </div>
+
+            <div class="transaction-footer">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+                <span>Mesero: {{ transaction.waiterName }}</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="empty-state" *ngIf="!isLoading && transactions.length === 0">
+        <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect width="20" height="14" x="2" y="5" rx="2"></rect>
+            <line x1="2" y1="10" x2="22" y2="10"></line>
+        </svg>
+        <h3>No hay transacciones</h3>
+        <p>Las transacciones aparecerán aquí cuando se procesen pagos</p>
+    </div>
+</div>

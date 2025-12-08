@@ -1,0 +1,70 @@
+<div class="admin-layout">
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="avatar">
+        {{ adminName ? adminName.charAt(0) : 'A' }}
+      </div>
+      <div class="admin-info">
+        <span class="name">{{ adminName }}</span>
+        <span class="role">Administrador</span>
+        <span class="email" *ngIf="adminEmail">{{ adminEmail }}</span>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <button
+        class="nav-item"
+        [class.active]="isActive('dashboard')"
+        (click)="navigate('dashboard')">
+        <span class="icon">📊</span>
+        <span>Dashboard</span>
+      </button>
+
+      <button
+        class="nav-item"
+        [class.active]="isActive('menu')"
+        (click)="navigate('menu')">
+        <span class="icon">🍽️</span>
+        <span>Gestión de Menú</span>
+      </button>
+
+      <button
+        class="nav-item"
+        [class.active]="isActive('tables')"
+        (click)="navigate('tables')">
+        <span class="icon">🪑</span>
+        <span>Gestión de Mesas</span>
+      </button>
+
+      <button
+        class="nav-item"
+        [class.active]="isActive('users')"
+        (click)="navigate('users')">
+        <span class="icon">👥</span>
+        <span>Gestor de Usuarios</span>
+      </button>
+
+      <button
+        class="nav-item"
+        [class.active]="isActive('statistics')"
+        (click)="navigate('statistics')">
+        <span class="icon">📈</span>
+        <span>Estadísticas</span>
+      </button>
+    </nav>
+
+    <div class="sidebar-footer">
+      <button class="logout-btn" (click)="logout()">
+        <span class="icon">🚪</span>
+        <span>Cerrar sesión</span>
+      </button>
+    </div>
+  </aside>
+
+  <main class="content">
+    <app-navbar></app-navbar>
+    <div class="content-inner">
+      <router-outlet></router-outlet>
+    </div>
+  </main>
+</div>

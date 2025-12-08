@@ -1,0 +1,88 @@
+<div class="admin-tables">
+  <div class="header">
+    <div>
+      <h1 class="title">Gestión de Mesas</h1>
+      <p class="subtitle">Administra las mesas del salón</p>
+    </div>
+    <button class="btn-primary" (click)="openCreate()">
+      + Nueva Mesa
+    </button>
+  </div>
+
+  <div class="table-container" *ngIf="!loading">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Nº Mesa</th>
+          <th>Nombre</th>
+          <th>Capacidad</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let t of tables">
+          <td>{{ t.tableNumber }}</td>
+          <td>{{ t.name }}</td>
+          <td>{{ t.capacity }}</td>
+          <td>
+            <span class="badge" [ngClass]="t.status.toLowerCase()">
+              {{ t.status }}
+            </span>
+          </td>
+          <td>
+            <div class="actions">
+              <button class="btn-edit" (click)="openEdit(t)">Editar</button>
+              <button class="btn-delete" (click)="delete(t.id)">Eliminar</button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="loading" *ngIf="loading">
+    <div class="spinner"></div>
+    <p>Cargando mesas...</p>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal-overlay" *ngIf="showModal" (click)="closeModal()">
+  <div class="modal" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>{{ editMode ? 'Editar Mesa' : 'Nueva Mesa' }}</h2>
+      <button class="close-btn" (click)="closeModal()">✕</button>
+    </div>
+
+    <div class="modal-body">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Nº Mesa</label>
+          <input type="number" [(ngModel)]="currentTable.tableNumber">
+        </div>
+        <div class="form-group">
+          <label>Capacidad</label>
+          <input type="number" [(ngModel)]="currentTable.capacity">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Nombre / Zona</label>
+        <input type="text" [(ngModel)]="currentTable.name" placeholder="Ej: Mesa terraza 1">
+      </div>
+
+      <div class="form-group">
+        <label>Estado inicial</label>
+        <select [(ngModel)]="currentTable.status">
+          <option *ngFor="let s of statuses" [value]="s">{{ s }}</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn-secondary" (click)="closeModal()">Cancelar</button>
+      <button class="btn-primary" (click)="save()">{{ editMode ? 'Guardar Cambios' : 'Crear Mesa' }}</button>
+    </div>
+  </div>
+</div>

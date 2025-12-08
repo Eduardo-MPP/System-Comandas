@@ -1,0 +1,192 @@
+<app-navbar></app-navbar>
+
+<!-- TOAST DE NOTIFICACIÓN -->
+<div class="toast-notification" *ngIf="showToast">
+  <div class="toast-content">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+      <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+    </svg>
+    <span>{{ toastMessage }}</span>
+  </div>
+</div>
+
+<!-- MODAL DE CUENTA -->
+<div class="modal-overlay" *ngIf="showBillModal" (click)="closeBillModal()">
+  <div class="bill-modal" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>Cuenta - {{ selectedTableForBill?.tableNumber }}</h2>
+      <button (click)="closeBillModal()" class="btn-close">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+
+    <div class="bill-content">
+      <div class="bill-header-info">
+        <p><strong>Mesa:</strong> {{ selectedTableForBill?.tableNumber }}</p>
+        <p><strong>Mesero:</strong> {{ currentUserName }}</p>
+        <p><strong>Pedido #:</strong> {{ billOrder?.id }}</p>
+      </div>
+
+      <div class="bill-items">
+        <div class="bill-item" *ngFor="let item of billOrder?.items">
+          <div class="item-row">
+            <span class="item-name">{{ item.quantity }}x {{ item.menuItem?.name }}</span>
+            <span class="item-price">S/ {{ ((item.unitPrice || 0) * item.quantity).toFixed(2) }}</span>
+          </div>
+          <p class="item-notes" *ngIf="item.notes">{{ item.notes }}</p>
+        </div>
+      </div>
+
+      <div class="bill-summary">
+        <div class="summary-line">
+          <span>Subtotal:</span>
+          <span>S/ {{ billSubtotal.toFixed(2) }}</span>
+        </div>
+        <div class="summary-line total-line">
+          <span><strong>TOTAL:</strong></span>
+          <span><strong>S/ {{ billTotal.toFixed(2) }}</strong></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-actions">
+      <button (click)="sendBillToCashier()" class="btn-send-bill">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="6" width="20" height="12" rx="2" ry="2"></rect>
+          <line x1="8" y1="10" x2="16" y2="10"></line>
+          <line x1="8" y1="14" x2="16" y2="14"></line>
+        </svg>
+        Enviar a Caja
+      </button>
+      <button (click)="closeBillModal()" class="btn-cancel-modal">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<div class="dashboard-container">
+  <div class="dashboard-header">
+    <div class="header-content">
+      <h1>
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"></path>
+          <path d="M7 2v20"></path>
+          <path d="M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"></path>
+        </svg>
+        Mesas del Restaurante
+      </h1>
+      <p>Selecciona una mesa para tomar el pedido</p>
+    </div>
+
+    <div class="filter-buttons">
+      <button [class.active]="selectedFilter === 'TODAS'" (click)="filterTables('TODAS')" class="filter-btn">Todas</button>
+      <button [class.active]="selectedFilter === 'LIBRE'" (click)="filterTables('LIBRE')" class="filter-btn filter-libre">Libres</button>
+      <button [class.active]="selectedFilter === 'OCUPADA'" (click)="filterTables('OCUPADA')" class="filter-btn filter-ocupada">Ocupadas</button>
+    </div>
+  </div>
+
+  <!-- SECCIÓN DE PEDIDOS LISTOS -->
+  <div class="ready-orders-section" *ngIf="readyOrders.length > 0">
+    <h2>
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="9 11 12 14 22 4"></polyline>
+        <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+      </svg>
+      Pedidos Listos para Servir ({{ readyOrders.length }})
+    </h2>
+
+    <div class="ready-orders-grid">
+      <div *ngFor="let order of readyOrders" class="ready-order-card">
+        <div class="order-badge">🟢 LISTO</div>
+        <div class="order-info">
+          <h3>Pedido #{{ order.id }}</h3>
+          <p class="order-table">{{ order.table?.tableNumber }}</p>
+          <div class="order-items-list">
+            <div *ngFor="let item of order.items" class="item-line">
+              <span class="item-qty">{{ item.quantity }}x</span>
+              <span class="item-name">{{ item.menuItem?.name }}</span>
+            </div>
+          </div>
+        </div>
+        <button (click)="markAsDelivered(order.id!)" class="btn-deliver">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+          Marcar como Servido
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="loading-spinner" *ngIf="isLoading">
+    <div class="spinner"></div>
+    <p>Cargando mesas...</p>
+  </div>
+
+  <div class="tables-grid" *ngIf="!isLoading">
+    <div *ngFor="let table of filteredTables" class="table-card">
+      <div class="table-icon" [ngClass]="getStatusClass(table.status)">
+        <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2v20M2 12h20"></path>
+          <circle cx="12" cy="12" r="9"></circle>
+        </svg>
+      </div>
+
+      <div class="table-info">
+        <h3>{{ table.tableNumber }}</h3>
+        <p class="table-zone">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+            <circle cx="12" cy="10" r="3"></circle>
+          </svg>
+          {{ table.zone }}
+        </p>
+        <p class="table-capacity">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+            <circle cx="9" cy="7" r="4"></circle>
+            <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+          </svg>
+          {{ table.capacity }} personas
+        </p>
+      </div>
+
+      <div class="table-status" [ngClass]="getStatusClass(table.status)">
+        <span>{{ getStatusText(table.status) }}</span>
+      </div>
+
+      <div class="table-action">
+        <button *ngIf="canOpenTable(table.status)" (click)="openTable(table)" class="btn-action">
+          Tomar Pedido
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </button>
+
+        <button *ngIf="table.status === 'OCUPADA'" (click)="viewBill(table)" class="btn-view-bill">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="6" width="20" height="12" rx="2" ry="2"></rect>
+            <line x1="8" y1="10" x2="16" y2="10"></line>
+            <line x1="8" y1="14" x2="16" y2="14"></line>
+          </svg>
+          Ver Cuenta
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="empty-state" *ngIf="!isLoading && filteredTables.length === 0">
+    <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="10"></circle>
+      <line x1="12" y1="8" x2="12" y2="12"></line>
+      <line x1="12" y1="16" x2="12.01" y2="16"></line>
+    </svg>
+    <h3>No hay mesas disponibles</h3>
+    <p>Intenta con otro filtro</p>
+  </div>
+</div>

@@ -1,0 +1,55 @@
+<div class="admin-dashboard">
+  <h1 class="title">Dashboard del Administrador</h1>
+  <p class="subtitle">Resumen general del restaurante en tiempo real</p>
+
+  <div class="cards" *ngIf="summary && !loading">
+    <div class="card total">
+      <div class="card-header">
+        <span class="label">Mesas activas</span>
+        <span class="icon">🍽️</span>
+      </div>
+      <div class="card-value">
+        {{ summary.activeTables }} / {{ summary.totalTables }}
+      </div>
+      <div class="card-footer">Mesas ocupadas o en atención</div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <span class="label">Meseros</span>
+        <span class="icon">👨‍🍳</span>
+      </div>
+      <div class="card-value">
+        {{ summary.totalWaiters }}
+      </div>
+      <div class="card-footer">Meseros registrados</div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <span class="label">Ingreso del turno</span>
+        <span class="icon">💵</span>
+      </div>
+      <div class="card-value">
+        S/ {{ summary.currentShiftIncome | number:'1.2-2' }}
+      </div>
+      <div class="card-footer">Según caja actual</div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">
+        <span class="label">Ventas del día</span>
+        <span class="icon">📅</span>
+      </div>
+      <div class="card-value">
+        S/ {{ summary.totalSalesToday | number:'1.2-2' }}
+      </div>
+      <div class="card-footer">Todas las formas de pago</div>
+    </div>
+  </div>
+
+  <div class="loading" *ngIf="loading">
+    <div class="spinner"></div>
+    <p>Cargando resumen...</p>
+  </div>
+</div>

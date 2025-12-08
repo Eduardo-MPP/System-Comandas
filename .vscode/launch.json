@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-OrderingSystemsApplication<ordering-systems>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.restaurant.ordering_systems.OrderingSystemsApplication",
+            "projectName": "ordering-systems",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}

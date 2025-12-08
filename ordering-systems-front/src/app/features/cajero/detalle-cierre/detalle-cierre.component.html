@@ -1,0 +1,116 @@
+<app-navbar></app-navbar>
+
+<div class="detail-container" *ngIf="closing">
+    <div class="detail-header">
+        <button class="btn-back" (click)="goBack()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="19" y1="12" x2="5" y2="12"></line>
+                <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+            Volver al Historial
+        </button>
+        <h1>📊 Detalle del Cierre: "{{ closing.name }}"</h1>
+        <p>Cerrado el {{ formatDate(closing.closedAt) }} • Cajero: {{ closing.cashierName }}</p>
+    </div>
+
+    <div class="summary-section">
+        <div class="summary-card total">
+            <div class="card-icon">💰</div>
+            <div class="card-content">
+                <span class="card-label">TOTAL VENDIDO</span>
+                <span class="card-amount">S/ {{ closing.totalAmount.toFixed(2) }}</span>
+            </div>
+        </div>
+
+        <div class="summary-card efectivo">
+            <div class="card-icon">💵</div>
+            <div class="card-content">
+                <span class="card-label">EFECTIVO</span>
+                <span class="card-amount">S/ {{ closing.efectivoAmount.toFixed(2) }}</span>
+            </div>
+        </div>
+
+        <div class="summary-card tarjeta">
+            <div class="card-icon">💳</div>
+            <div class="card-content">
+                <span class="card-label">TARJETA</span>
+                <span class="card-amount">S/ {{ closing.tarjetaAmount.toFixed(2) }}</span>
+            </div>
+        </div>
+
+        <div class="summary-card transferencia">
+            <div class="card-icon">🏦</div>
+            <div class="card-content">
+                <span class="card-label">TRANSFERENCIA</span>
+                <span class="card-amount">S/ {{ closing.transferenciaAmount.toFixed(2) }}</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="transactions-info">
+        <h2>DETALLE DE TRANSACCIONES</h2>
+        <p>Total de {{ closing.totalTransactions }} transacciones registradas</p>
+    </div>
+
+    <div class="loading-spinner" *ngIf="isLoading">
+        <div class="spinner"></div>
+        <p>Cargando transacciones...</p>
+    </div>
+
+    <div class="transactions-table" *ngIf="!isLoading && transactions.length > 0">
+        <table>
+            <thead>
+                <tr>
+                    <th>Mesa</th>
+                    <th>Hora</th>
+                    <th>Método</th>
+                    <th>Monto</th>
+                    <th>Mesero</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let transaction of transactions">
+                    <td>
+                        <div class="table-cell">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 2v20M2 12h20"></path>
+                                <circle cx="12" cy="12" r="9"></circle>
+                            </svg>
+                            {{ transaction.tableNumber }}
+                        </div>
+                    </td>
+                    <td>{{ formatTime(transaction.paidAt) }}</td>
+                    <td>
+                        <div class="method-badge">
+                            <span class="method-icon">{{ getMethodIcon(transaction.method) }}</span>
+                            {{ transaction.method }}
+                        </div>
+                    </td>
+                    <td class="amount-cell">S/ {{ transaction.amount.toFixed(2) }}</td>
+                    <td>
+                        <div class="waiter-cell">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="12" cy="7" r="4"></circle>
+                            </svg>
+                            {{ transaction.waiterName }}
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="empty-state" *ngIf="!isLoading && transactions.length === 0">
+        <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect width="20" height="14" x="2" y="5" rx="2"></rect>
+            <line x1="2" y1="10" x2="22" y2="10"></line>
+        </svg>
+        <h3>No hay transacciones</h3>
+        <p>No se encontraron transacciones para este cierre</p>
+    </div>
+</div>

@@ -1,0 +1,562 @@
+/* Container principal */
+.dashboard-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+    min-height: calc(100vh - 70px);
+}
+
+/* Header del dashboard */
+.dashboard-header {
+    margin-bottom: 30px;
+}
+
+.header-content {
+    margin-bottom: 20px;
+}
+
+.header-content h1 {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 2rem;
+    color: #1f2937;
+    margin: 0 0 8px 0;
+}
+
+.header-content h1 svg {
+    color: #6366f1;
+}
+
+.header-content p {
+    color: #6b7280;
+    margin: 0;
+    font-size: 1rem;
+}
+
+/* Filtros */
+.filter-buttons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.filter-btn {
+    padding: 10px 20px;
+    border: 2px solid #e5e7eb;
+    background: white;
+    color: #374151;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.filter-btn:hover {
+    border-color: #6366f1;
+    color: #6366f1;
+}
+
+.filter-btn.active {
+    background: #6366f1;
+    color: white;
+    border-color: #6366f1;
+}
+
+.filter-libre.active {
+    background: #10b981;
+    border-color: #10b981;
+}
+
+.filter-ocupada.active {
+    background: #ef4444;
+    border-color: #ef4444;
+}
+
+/* Grid de mesas */
+.tables-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.table-card {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.table-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.table-icon {
+    width: 80px;
+    height: 80px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 15px;
+}
+
+.table-icon.status-libre {
+    background: #d1fae5;
+    color: #059669;
+}
+
+.table-icon.status-ocupada {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+.table-icon.status-esperando {
+    background: #fef3c7;
+    color: #d97706;
+}
+
+.table-icon.status-cuenta {
+    background: #dbeafe;
+    color: #2563eb;
+}
+
+.table-info {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.table-info h3 {
+    font-size: 1.5rem;
+    color: #111827;
+    margin: 0 0 8px 0;
+}
+
+.table-zone,
+.table-capacity {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    color: #6b7280;
+    font-size: 0.9rem;
+    margin: 4px 0;
+}
+
+.table-status {
+    text-align: center;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+}
+
+.table-status.status-libre {
+    background: #d1fae5;
+    color: #059669;
+}
+
+.table-status.status-ocupada {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+.table-status.status-esperando {
+    background: #fef3c7;
+    color: #d97706;
+}
+
+.table-status.status-cuenta {
+    background: #dbeafe;
+    color: #2563eb;
+}
+
+.table-action {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.btn-action {
+    width: 100%;
+    background: #6366f1;
+    color: white;
+    border: none;
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: background 0.2s;
+}
+
+.btn-action:hover {
+    background: #4f46e5;
+}
+
+.btn-view-bill {
+    width: 100%;
+    background: #3b82f6;
+    color: white;
+    border: none;
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: background 0.2s;
+}
+
+.btn-view-bill:hover {
+    background: #2563eb;
+}
+
+/* Sección de pedidos listos */
+.ready-orders-section {
+    background: #f0fdf4;
+    border: 2px solid #86efac;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 30px;
+}
+
+.ready-orders-section h2 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #166534;
+    margin: 0 0 20px 0;
+    font-size: 1.5rem;
+}
+
+.ready-orders-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 15px;
+}
+
+.ready-order-card {
+    background: white;
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.order-badge {
+    background: #86efac;
+    color: #166534;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    display: inline-block;
+    margin-bottom: 10px;
+}
+
+.order-info h3 {
+    margin: 0 0 5px 0;
+    color: #111827;
+    font-size: 1.1rem;
+}
+
+.order-table {
+    color: #6b7280;
+    font-weight: 600;
+    margin: 0 0 10px 0;
+}
+
+.order-items-list {
+    margin: 10px 0;
+}
+
+.item-line {
+    padding: 5px 0;
+    color: #374151;
+    font-size: 0.9rem;
+}
+
+.item-qty {
+    font-weight: 700;
+    color: #059669;
+    margin-right: 5px;
+}
+
+.btn-deliver {
+    width: 100%;
+    background: #10b981;
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 10px;
+    transition: background 0.2s;
+}
+
+.btn-deliver:hover {
+    background: #059669;
+}
+
+/* Toast de notificación */
+.toast-notification {
+    position: fixed;
+    top: 80px;
+    right: 20px;
+    background: white;
+    border-left: 4px solid #10b981;
+    border-radius: 8px;
+    padding: 16px 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 9999;
+    animation: slideIn 0.3s ease-out;
+}
+
+.toast-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: #111827;
+    font-weight: 500;
+}
+
+.toast-content svg {
+    color: #10b981;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(400px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Loading */
+.loading-spinner {
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.spinner {
+    width: 50px;
+    height: 50px;
+    border: 4px solid #e5e7eb;
+    border-top-color: #6366f1;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin: 0 auto 15px;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Empty state */
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: #6b7280;
+}
+
+.empty-state svg {
+    color: #d1d5db;
+    margin-bottom: 20px;
+}
+
+.empty-state h3 {
+    margin: 10px 0 5px;
+    color: #374151;
+}
+
+/* Modal de cuenta */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.bill-modal {
+    background: white;
+    border-radius: 16px;
+    width: 90%;
+    max-width: 500px;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border-bottom: 2px solid #e5e7eb;
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: #1f2937;
+}
+
+.btn-close {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #6b7280;
+    padding: 5px;
+}
+
+.btn-close:hover {
+    color: #ef4444;
+}
+
+.bill-content {
+    padding: 20px;
+}
+
+.bill-header-info {
+    background: #f9fafb;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.bill-header-info p {
+    margin: 5px 0;
+    color: #374151;
+}
+
+.bill-items {
+    border-top: 1px solid #e5e7eb;
+    border-bottom: 1px solid #e5e7eb;
+    padding: 15px 0;
+    margin-bottom: 15px;
+}
+
+.bill-item {
+    padding: 12px 0;
+    border-bottom: 1px solid #f3f4f6;
+}
+
+.bill-item:last-child {
+    border-bottom: none;
+}
+
+.item-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1rem;
+}
+
+.item-name {
+    font-weight: 500;
+    color: #111827;
+}
+
+.item-price {
+    color: #059669;
+    font-weight: 600;
+}
+
+.item-notes {
+    font-size: 0.875rem;
+    color: #6b7280;
+    font-style: italic;
+    margin: 5px 0 0 0;
+}
+
+.bill-summary {
+    padding: 15px;
+    background: #f9fafb;
+    border-radius: 8px;
+}
+
+.summary-line {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    font-size: 1rem;
+}
+
+.total-line {
+    border-top: 2px solid #d1d5db;
+    padding-top: 12px;
+    margin-top: 8px;
+    font-size: 1.25rem;
+    color: #059669;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 10px;
+    padding: 20px;
+    border-top: 2px solid #e5e7eb;
+}
+
+.btn-send-bill {
+    flex: 1;
+    background: #059669;
+    color: white;
+    border: none;
+    padding: 14px 20px;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: background 0.2s;
+}
+
+.btn-send-bill:hover {
+    background: #047857;
+}
+
+.btn-cancel-modal {
+    flex: 0.4;
+    background: #e5e7eb;
+    color: #374151;
+    border: none;
+    padding: 14px 20px;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn-cancel-modal:hover {
+    background: #d1d5db;
+}

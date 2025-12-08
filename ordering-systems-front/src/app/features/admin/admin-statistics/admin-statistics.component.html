@@ -1,0 +1,111 @@
+<div class="admin-stats">
+  <div class="header">
+    <div>
+      <h1 class="title">Estadísticas</h1>
+      <p class="subtitle">Resumen de ventas y rendimiento del equipo</p>
+    </div>
+
+    <div class="filters">
+      <div class="filter-group">
+        <label>Desde</label>
+        <input type="date" [(ngModel)]="startDate">
+      </div>
+      <div class="filter-group">
+        <label>Hasta</label>
+        <input type="date" [(ngModel)]="endDate">
+      </div>
+      <button class="btn-primary" (click)="applyFilter()">Aplicar</button>
+    </div>
+  </div>
+
+  <div *ngIf="loading" class="loading">
+    <div class="spinner"></div>
+    <p>Cargando estadísticas...</p>
+  </div>
+
+  <div class="grid" *ngIf="!loading">
+    <!-- Top platos -->
+    <section class="card">
+      <h2 class="section-title">Platos más pedidos</h2>
+      <table class="table small">
+        <thead>
+          <tr>
+            <th>Plato</th>
+            <th>Cant.</th>
+            <th>Total (S/)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let d of topDishes">
+            <td>{{ d.menuItemName }}</td>
+            <td>{{ d.timesOrdered }}</td>
+            <td>{{ d.totalAmount | number:'1.2-2' }}</td>
+          </tr>
+          <tr *ngIf="topDishes.length === 0">
+            <td colspan="3" class="empty">Sin datos en el rango seleccionado</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Ventas por día -->
+    <section class="card">
+      <h2 class="section-title">Ventas por día</h2>
+      <table class="table small">
+        <thead>
+          <tr>
+            <th>Fecha</th>
+            <th>Total (S/)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let s of salesByDay">
+            <td>{{ formatDate(s.date) }}</td>
+            <td>{{ s.totalAmount | number:'1.2-2' }}</td>
+          </tr>
+          <tr *ngIf="salesByDay.length === 0">
+            <td colspan="2" class="empty">Sin ventas registradas</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Métodos de pago -->
+    <section class="card">
+      <h2 class="section-title">Métodos de pago</h2>
+      <ul class="list">
+        <li *ngFor="let pm of paymentMethods">
+          <span class="label">{{ pm.method }}</span>
+          <span class="value">S/ {{ pm.totalAmount | number:'1.2-2' }}</span>
+        </li>
+        <li *ngIf="paymentMethods.length === 0" class="empty">
+          Sin datos de métodos de pago
+        </li>
+      </ul>
+    </section>
+
+    <!-- Rendimiento meseros -->
+    <section class="card">
+      <h2 class="section-title">Rendimiento de meseros</h2>
+      <table class="table small">
+        <thead>
+          <tr>
+            <th>Mesero</th>
+            <th>Pedidos</th>
+            <th>Total (S/)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let w of waiterPerformance">
+            <td>{{ w.waiterName }}</td>
+            <td>{{ w.ordersCount }}</td>
+            <td>{{ w.totalAmount | number:'1.2-2' }}</td>
+          </tr>
+          <tr *ngIf="waiterPerformance.length === 0">
+            <td colspan="3" class="empty">Sin datos de rendimiento</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </div>
+</div>
